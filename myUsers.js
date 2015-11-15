@@ -46,5 +46,11 @@ $scope.editUser = function(id) {
     
   
 };
+    
+$scope.closediv = function (){
+        alert("done")
+ $scope.IsVisible = false;
+ 
+};
 
 });
