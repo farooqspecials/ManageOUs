@@ -1,11 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
+    
+     
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
+ 
+    <script>
+        
+	$(document).ready(function() {
+		
+		//getStudentData();
+		initialize();
+	});
+	</script>
+
+
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link href="customstyle.css" rel="stylesheet" type="text/css">
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="data.js"></script>
   
  </head>   
 
@@ -39,14 +54,17 @@
         </div>
         <div class="col-sm-9 col-md-6" >
     
-       <label class="custom-select">    
+       <label class="custom-select" >    
       <select  ng-model="filters.searchdd">
-      <option selected disabled> Plese Select Level</option>
-      <option  value="Pege">Pege</option>
-      <option value="option-2">pim</option>
-      <option value="option-3">smith</option>
+      <option selected disabled value="" style="display:block;"> Plese Select Level</option>
+      <option  value="private">private</option>
+      <option value="simple">simple</option>
+      <option value="vip">vip</option>
       </select>  
            </label> 
+           
+            
+            
             
    
     </div>
@@ -57,8 +75,10 @@
 <table class="table table-striped">
   <thead><tr>
     <th>Edit</th>
-    <th>First Name</th>
-    <th>Last Name</th>
+    <th>Organizational Units</th>
+    <th>Levels</th>
+      <th>Drop Down Menu
+    </th>
   </tr></thead>
   <tbody><tr ng-repeat="user in users | filter:filters.search| filter: filters.searchdd">
     <td>
@@ -68,6 +88,15 @@
     </td>
     <td>{{ user.fName }}</td>
     <td>{{ user.lName }}</td>
+      <td><label class="custom-select" >    
+      <select  ng-model="filters.searchdd">
+      <option selected disabled value="" style="display:block;"> Search or Edit</option>
+      <option  value="1">Locate on Map</option>
+      <option value="2">Edit Coordinates</option>
+      <option value="3">Edit org. unit details</option>
+           <option value="4">Add new facility</option>
+      </select>  
+           </label> </td>
   </tr></tbody>
 </table>
 
@@ -112,5 +141,6 @@
 </div>
 <div id="map"></div>
 <script src = "myUsers.js"></script>
+    
 </body>
 </html>

@@ -2,7 +2,12 @@
 label.custom-select {
     position: relative;
     display: inline-block;
+    
 }
+ #map {
+        width: 500px;
+        height: 400px;
+      }
 
     .custom-select select {
         display: inline-block;

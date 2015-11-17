@@ -19,10 +19,10 @@ $scope.lName = '';
 $scope.passw1 = '';
 $scope.passw2 = '';
 $scope.users = [
-{id:1, fName:'Hege', lName:"Pege" },
-{id:2, fName:'Kim',  lName:"Pim" },
-{id:3, fName:'Sal',  lName:"Smith" },
-{id:4, fName:'Jack', lName:"Jones" },
+{id:1, fName:'Western Area', lName:"private" },
+{id:2, fName:'Eastern Area',  lName:"simple" },
+{id:3, fName:'Southern Area',  lName:"vip" },
+{id:4, fName:'Northern Area', lName:"ordinary" },
 {id:5, fName:'John', lName:"Doe" },
 {id:6, fName:'Peter',lName:"Pan" }
 ];
