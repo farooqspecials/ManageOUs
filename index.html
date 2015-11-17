@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html>
+<head>
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link href="customstyle.css" rel="stylesheet" type="text/css">
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  
+ </head>   
+
 <body ng-app="myApp" ng-controller="userCtrl">
 
 <div class="container">
@@ -33,15 +38,17 @@
          <input type="text" class="form-control" ng-model="filters.search" placeholder="Search for Organization Units">
         </div>
         <div class="col-sm-9 col-md-6" >
-        <div class="dropdown">
-  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
-  <span class="caret"></span></button>
-  <ul class="dropdown-menu">
-    <li><a href="#">HTML</a></li>
-    <li><a href="#">Pege</a></li>
-    <li><a href="#">JavaScript</a></li>
-  </ul>
-</div>
+    
+       <label class="custom-select">    
+      <select  ng-model="filters.searchdd">
+      <option selected disabled> Plese Select Level</option>
+      <option  value="Pege">Pege</option>
+      <option value="option-2">pim</option>
+      <option value="option-3">smith</option>
+      </select>  
+           </label> 
+            
+   
     </div>
 
   </div>
@@ -53,7 +60,7 @@
     <th>First Name</th>
     <th>Last Name</th>
   </tr></thead>
-  <tbody><tr ng-repeat="user in users | filter:filters.search" |>
+  <tbody><tr ng-repeat="user in users | filter:filters.search| filter: filters.searchdd">
     <td>
       <button class="btn" ng-click="editUser(user.id)" >
       <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit
@@ -93,7 +100,6 @@
   </div>
 </div>
 </form>
-    
 <hr>
 <button class="btn btn-success" ng-disabled="error || incomplete">
   <span class="glyphicon glyphicon-save"></span> Save Changes

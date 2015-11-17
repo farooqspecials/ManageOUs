@@ -5,3 +5,8 @@ function initMap() {
     zoom: 8
   });
 }
+
+$('.selectpicker').selectpicker({
+      style: 'btn-info',
+      size: 4
+  });
