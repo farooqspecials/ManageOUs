@@ -1,0 +1,22 @@
+{
+    "version":"1.0",
+    "name":"Example Application",
+    "description":"Example application for DHIS2.",
+     "developer":{
+		"url":"http://dhis2.org/",
+        "name":"Farooq and Imad and waqas and theepan",
+        "company":"University of Oslo",
+        "email":"abc@cde.net"
+},
+    "activities":{
+    "dhis":{
+        "href":"*"
+    }
+},
+    "launchUrl":null,
+    "launch_path":"index.html",
+    "installs_allowed_from":[
+    "*"
+],
+    "default_locale":"en"
+}
