@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myApp">
 <head>
     
      
@@ -13,18 +13,21 @@
 		//initialize();
 	//});
 	</script>
-
-
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link href="customstyle.css" rel="stylesheet" type="text/css">
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+<link href="customstyle.css" rel="stylesheet" type="text/css">
+<script data-require="angular.js@*" data-semver="1.3.14" src="http://code.angularjs.org/1.3.14/angular.js"></script>
+
 <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script src="data.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="https://cdn.rawgit.com/angular-ui/bootstrap/gh-pages/ui-bootstrap-tpls-0.9.0.min.js"></script>
+<!--script src="mainApp.js"></script-->
+
+<script src="data.js"></script>
 <script src = "myUsers.js"></script>  
  </head>   
+<body ng-controller="ApplicationController">
 
-<body ng-app="myApp" ng-controller="userCtrl" onload="init()">
+<!--body ng-app="myApp" ng-controller="userCtrl" ng-init="init()"-->
 
 <div class="container">
 
@@ -80,14 +83,14 @@
       <th>Drop Down Menu
     </th>
   </tr></thead>
-  <tbody><tr ng-repeat="user in users | filter:filters.search| filter: filters.searchdd">
+  <tbody><tr ng-repeat="user in names | filter:filters.search| filter: filters.searchdd">
     <td>
       <button class="btn" ng-click="editUser(user.id)" >
       <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit
       </button>
     </td>
+    <td>{{ user.code }}</td>
     <td>{{ user.name }}</td>
-    <td>{{ user.id }}</td>
       <td><label class="custom-select" >    
       <select  ng-model="filters.searchdd">
       <option selected disabled value="" style="display:block;"> Search or Edit</option>

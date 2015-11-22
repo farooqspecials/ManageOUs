@@ -1,42 +1,54 @@
-angular.module('myApp', []).controller('userCtrl', function($scope,$http) {
+angular.module('myApp', ['ui.bootstrap']).controller('ApplicationController', function($scope,$http) {
+ 
+   /* $scope.filters = {
+        
+        search: ''
+    };
+    
+    $scope.actions = {
+      function () {
+           
+                 $scope.filters.search = '';   
+            
+        }
+    };*/
+    
+    
+$scope.fName = '';
+$scope.lName = '';
+$scope.passw1 = '';
+$scope.passw2 = '';
+$scope.IsVisible = false;
+   
+                //If DIV is visible it will be hidden and vice versa.
+               
+init();           
+    
 
 function init(){
-    	var apiUrl = "http://localhost:8080/api/organisationUnits.json";
-	
+    	var apiUrl = "http://192.168.0.105:8082/api/organisationUnits.json?fields=%3Aidentifiable%2Ccoordinates%2Clevel%2CshortName%2Cparent&pageSize=2000";
+		
     	// Cross-site redirect error solution: Run chrome with --disable-web-security
     	var base64 = "YWRtaW46ZGlzdHJpY3Q=";
-	//$http.get(apiUrl, {headers: {'Authorization': 'Basic YWRtaW46ZGlzdHJpY3Q='}}).	    	
-	$http.get(apiUrl, {headers: {'Authorization': 'Basic YWRtaW46ZGlzdHJpY3Q='}}).
+    	/*
+		$http.get(apiUrl, {headers: {'Authorization': 'Basic YWRtaW46ZGlzdHJpY3Q='}}).
     	success(function(data) {
-	
-	// $scope.users = [];
-    	 $scope.users = data;
-         alert('success');
+			console.log(data.organisationUnits);
+				$scope.orgUnits = data.organisationUnits;
     	}).
     	error(function(data, status, headers, config) {
     		alert("Error. Data: " + data);
     	});
-    };
-      
-/*$scope.fName = '';
-$scope.lName = '';
-$scope.passw1 = '';
-$scope.passw2 = '';
-$scope.users = [
-{id:1, fName:'Western Area', lName:"private" },
-{id:2, fName:'Eastern Area',  lName:"simple" },
-{id:3, fName:'Southern Area',  lName:"vip" },
-{id:4, fName:'Northern Area', lName:"ordinary" },
-{id:5, fName:'John', lName:"Doe" },
-{id:6, fName:'Peter',lName:"Pan" }
-];*/
-     init();
-     $scope.IsVisible = false;
-   
-                //If DIV is visible it will be hidden and vice versa.
-     $scope.editUser = function(id) {
+		*/
+		$http.get(apiUrl)
+		  .success(function (response) {
+			  $scope.names = response.organisationUnits;
+			  console.log(response.organisationUnits);
+		  });
+    } 
+$scope.editUser = function(id) {
     
-     $scope.IsVisible = true;
+    $scope.IsVisible = true;
     
     
     $scope.fName = $scope.users[id-1].fName;

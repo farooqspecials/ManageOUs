@@ -1,35 +1,4 @@
 
-function init(){
-    	var apiUrl = "http://193.157.207.12:8080/api/organisationUnits.json";
-
-//192.168.0.105193.157.207.12
-    	// Cross-site redirect error solution: Run chrome with --disable-web-security
-    	var base64 = "YWRtaW46ZGlzdHJpY3Q=";
-    	$.ajax(apiUrl, {headers: {'Authorization': 'Basic YWRtaW46ZGlzdHJpY3Q='}}).
-    	success(function(data) {
-				alert('success');
-    	}).
-    	error(function(data, status, headers, config) {
-    		alert("Error. Data: " + data);
-    	});
-    }
-
-/*function init(){
-    	var apiUrl = "http://localhost:8080/api/organisationUnits.json";
-	
-    	// Cross-site redirect error solution: Run chrome with --disable-web-security
-    	var base64 = "YWRtaW46ZGlzdHJpY3Q=";
-    	$.ajax(apiUrl, {headers: {'Authorization': 'Basic YWRtaW46ZGlzdHJpY3Q='}}).
-    	success(function(data) {
-	
-	// $scope.users = [];
-    	// $scope.users = data;
-         alert('success');
-    	}).
-    	error(function(data, status, headers, config) {
-    		alert("Error. Data: " + data);
-    	});
-    }*/
 
       function initialize() {
           var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
