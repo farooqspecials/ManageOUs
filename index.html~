@@ -25,7 +25,7 @@
 <script src="data.js"></script>
 <script src = "myUsers.js"></script>  
  </head>   
-<body ng-controller="ApplicationController as appctrl">
+<body ng-controller="ApplicationController">
 
 <!--body ng-app="myApp" ng-controller="userCtrl" ng-init="init()"-->
 
@@ -47,20 +47,6 @@
   </div>
 </nav>
     
-    <div>
-   
-      <button type="button" class="btn btn-primary" ng-click="levelOU()">Organization Units </button>
-      </button>
-    <button type="button" class="btn btn-primary" ng-click="levelCD()">Chiefdom</button>
-      </button>
-    <button type="button" class="btn btn-primary" ng-click="levelD()">District </button>
-      </button>
-    
-    <button type="button" class="btn btn-primary" ng-click="levelF()">Facility </button>
-      </button>
-    </div>
-    
-    
 <h4>Search For the Organization Units</h4>
     
 <div class="row">
@@ -72,20 +58,14 @@
         <div class="col-sm-9 col-md-6" >
     
        <label class="custom-select" >    
-      <!--<select  ng-model="filters.searchdd">
+      <select  ng-model="filters.searchdd">
       <option selected disabled value="" style="display:block;"> Plese Select Level</option>
       <option  value="private">private</option>
       <option value="simple">simple</option>
       <option value="vip">vip</option>
-      </select> -->
-                            <select 
-								ng-model="appctrl.currentOrgType"
-								ng-options="option.name for option in appctrl.levelOptions">
-								<option value="">Unit Type..</option>
-							</select>
-
+      </select>  
            </label> 
-        
+           
             
             
             
@@ -103,14 +83,14 @@
       <th>Drop Down Menu
     </th>
   </tr></thead>
-  <tbody><tr ng-repeat="user in names | filter:filters.search| filter: filters.searchdd | filter:customFilter(unit)">
+  <tbody><tr ng-repeat="user in names | filter:filters.search| filter: filters.searchdd">
     <td>
       <button class="btn" ng-click="editUser(user.id)" >
       <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit
       </button>
     </td>
+    <td>{{ user.code }}</td>
     <td>{{ user.name }}</td>
-    <td>{{appctrl.currentOrgType.name}}</td>
       <td><label class="custom-select" >    
       <select  ng-model="filters.searchdd">
       <option selected disabled value="" style="display:block;"> Search or Edit</option>
