@@ -5,14 +5,17 @@ $scope.lName = '';
 $scope.passw1 = '';
 $scope.passw2 = '';
 $scope.IsVisible = false;
-   
+$scope.currentPage = 1;   
+$scope.pageSize = 25;
+$scope.records = [];   
+$scope.ouLevel = 4;   
                 //If DIV is visible it will be hidden and vice versa.
                
 init();    
 
 
 function init(){
-    	var apiUrl = "http://localhost:8080/api/organisationUnits.json?fields=:identifiable,coordinates,level,shortName,parent&pageSize=2000";
+    	var apiUrl = "http://192.168.0.105:8082/api/organisationUnits.json?fields=:identifiable,coordinates,level,shortName,parent&pageSize=25&page="+$scope.currentPage+"&level="+$scope.ouLevel;
 		
     	// Cross-site redirect error solution: Run chrome with --disable-web-security
     	//var base64 = "YWRtaW46ZGlzdHJpY3Q=";
@@ -21,14 +24,16 @@ function init(){
     	success(function(data) {
 			console.log(data.organisationUnits);
 				$scope.orgUnits = data.organisationUnits;
-    	}).
+    	}). 
     	error(function(data, status, headers, config) {
     		alert("Error. Data: " + data);
     	});
 		*/
 		$http.get(apiUrl)
 		  .success(function (response) {
-			  $scope.names = response.organisationUnits;
+			  angular.copy(response.organisationUnits, $scope.records);
+			   $scope.totalItems = response.pager.total ;
+			   console.log(response.pager.total);
 			  console.log(response.organisationUnits);
 		  });
     } 
@@ -54,24 +59,41 @@ function init(){
 		}
 	}
     
-    
+    $scope.pageChanged = function() {
+		init();
+	};
+	
     $scope.levelOU=function(){
-        
-        appctrl.currentOrgType = appctrl.levelOptions[2];
+		$scope.ouLevel = 3;   
+		appctrl.currentOrgType = appctrl.levelOptions[2];
+        init();  
+     //   appctrl.currentOrgType = appctrl.levelOptions[2];
     }
     
      $scope.levelCD=function(){
-        
-        appctrl.currentOrgType = appctrl.levelOptions[0];
+		$scope.ouLevel = 1;   
+		appctrl.currentOrgType = appctrl.levelOptions[0];
+        init();
+
+
+   //     appctrl.currentOrgType = appctrl.levelOptions[0];
     }
     
      $scope.levelD=function(){
-        
-        appctrl.currentOrgType = appctrl.levelOptions[1];
+		$scope.ouLevel = 2;   
+		appctrl.currentOrgType = appctrl.levelOptions[1];
+        init();
+
+
+  //      appctrl.currentOrgType = appctrl.levelOptions[1];
     }
       $scope.levelF=function(){
-        
-        appctrl.currentOrgType = appctrl.levelOptions[3];
+  		$scope.ouLevel = 4;   
+		appctrl.currentOrgType = appctrl.levelOptions[3];
+        init();
+
+
+//        appctrl.currentOrgType = appctrl.levelOptions[3];
     }
 
     
