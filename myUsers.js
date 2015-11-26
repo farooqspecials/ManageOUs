@@ -75,18 +75,51 @@ function init(){
     }
 
     
-    $scope.editUser = function(id) {
+    $scope.editOU = function(id) {
     
     $scope.IsVisible = true;
     
     
-    $scope.fName = $scope.users[id-1].fName;
-    $scope.lName = $scope.users[id-1].lName; 
+    $scope.name = $scope.names[id-1].name;
+   // $scope.lName = $scope.users[id-1].lName; 
     
      
     
   
 };
+    
+    /*
+     $scope.editEvent = function(id) {
+     //alert('delete ' + id);   
+         $scope.name=$scope.names[id-1].name;
+     };*/
+   
+    
+    $scope.updateopo = function(user) {
+
+		var apiUrl = "http://localhost:8080/api/organisationUnits/";
+
+		console.log(user);
+
+		// Setup request
+		var request = $http({
+			method: "put",
+			url: apiUrl + user.id + '.json',
+			data: user,
+		});
+
+		// Perform request
+		request.success(function(data) {
+			
+            console.log(data);
+           
+            init(); 
+		}).error(function(data, status) {
+			alert("Update error");
+            init();
+		});
+
+	};
     
 $scope.closediv = function (){
     console.log("hey")
