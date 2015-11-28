@@ -3,26 +3,22 @@
 <head>
     
      
-    <script src="https://maps.googleapis.com/maps/api/js"></script>
- 
-    <script>
-        
-	//$(document).ready(function() {
-		
-		//getStudentData();
-		//initialize();
-	//});
-	</script>
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-<link href="customstyle.css" rel="stylesheet" type="text/css">
-<script data-require="angular.js@*" data-semver="1.3.14" src="http://code.angularjs.org/1.3.14/angular.js"></script>
 
-<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<script src="https://cdn.rawgit.com/angular-ui/bootstrap/gh-pages/ui-bootstrap-tpls-0.9.0.min.js"></script>
+ 
+<!-- Style Sheets includes -->
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link href="css/customstyle.css" rel="stylesheet" type="text/css">
+
+<!-- Script includes -->
+<script data-require="angular.js@*" data-semver="1.3.14" src="js/angular.js"></script>
+<script src="js/jquery-2.1.4.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/ui-bootstrap-tpls-0.12.0.js"></script>
+<script src="js/map.js"></script>
 <!--script src="mainApp.js"></script-->
 
 <script src="data.js"></script>
+  
 <script src = "myUsers.js"></script>  
  </head>   
 <body ng-controller="ApplicationController as appctrl">
@@ -47,8 +43,7 @@
   </div>
 </nav>
     
-    <div class="row">
-        <div class="col-md-7">
+    <div>
    
       <button type="button" class="btn btn-primary" ng-click="levelOU()">Organization Units </button>
       </button>
@@ -59,8 +54,6 @@
     
     <button type="button" class="btn btn-primary" ng-click="levelF()">Facility </button>
       </button>
-    </div>
-
     </div>
     
     
@@ -96,71 +89,25 @@
     </div>
 
   </div>
-</br>
 
-<div  class="row">
-        <div class="col-md-12">
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addFacility" >Add New Facility </button>
-      </button>
-        </div>
     
-    </div>
-
-   <div class="row">
-       
-     <div class="col-md-11">
 <table class="table table-striped">
   <thead><tr>
-    
+    <th>Edit</th>
     <th>Organizational Units</th>
     <th>Levels</th>
       <th>Drop Down Menu
     </th>
   </tr></thead>
-    
-    
-  <tbody><tr ng-repeat="user in names | filter:filters.search| filter: filters.searchdd | filter:customFilter(unit)">
+  <tbody><tr ng-repeat="record in records | filter:filters.search| filter: filters.searchdd | filter:customFilter(unit)">
     <td>
-        
-            
-                    
-                        <a  href="#"   ng-model="collapsed" ng-click="collapsed=!collapsed"> {{ user.name }}</a>
-                         <div ng-show="collapsed">
-                    
-                    <form name="unitUpdateForm" ng-submit="updateop(user)">
-											<!-- Name -->
-											<fieldset class="form-group">
-												<!-- Name -->
-												<label >Name</label>
-												<input ng-model="user.name" placeholder="Name" class="form-control" />
-											
-												<!-- TODO: Add more attributes -->
-												<label >Short name</label>
-												<input ng-model="user.shortName" placeholder="Short name" class="form-control" />
-
-												
-											<fieldset class="form-group">
-												<input type="submit" class="btn btn-primary pull-right"
-													value="Save" />
-											</fieldset>
-										</form>
-                    
-                    </div>
-                    
-                </div>
-               
-                   
-            
-       
-        
-       
-      
-      
-      </td>
+      <button class="btn" ng-click="editUser(user.id)" >
+      <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit
+      </button>
+    </td>
+    <td>{{ record.name }}</td>
     <td>{{appctrl.currentOrgType.name}}</td>
-      
-          
-    <!--      <label class="custom-select" >    
+      <td><label class="custom-select" >    
       <select  ng-model="filters.searchdd">
       <option selected disabled value="" style="display:block;"> Search or Edit</option>
       <option  value="1">Locate on Map</option>
@@ -168,102 +115,11 @@
       <option value="3">Edit org. unit details</option>
            <option value="4">Add new facility</option>
       </select>  
-           </label>-->
-      <td>
-    <div class="dropdown">
-  <button class="btn btn-primary" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-    Search or Edit
-    <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-    <li><a data-toggle="modal" href="#addFacility">Add New Facility</a></li>
-    <li><a data-toggle="modal" href="#EditOU" ng-click="editOU(user.id)" >Edit Organization Unit</a></li>
-    <li><a href="#">Something else here</a></li>
-    <li role="separator" class="divider"></li>
-    <li><a href="#">Separated link</a></li>
-  </ul>
-</div>
-            
-      </td>
+           </label> </td>
   </tr></tbody>
-  <tr>
-
-</tr>
 </table>
-</div>
-       
-       
-</div>
-    
-    
-    
-    
-    <div class="container">
-  
-  <!-- Modal facility Start -->
-  <div class="modal fade" id="addFacility" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Add New Facility</h4>
-        </div>
-        <div class="modal-body">
-          <p>Some text in the modal.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
-    </div>
-  </div>
-        <!-- Modal facility end -->
-        
-        <!-- Edit Org Unit Details -->
-        
-        <div class="modal fade" id="EditOU" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Edit Organization Unit</h4>
-        </div>
-        <div class="modal-body">
-          <form name="unitUpdateForm" ng-submit="updateOrgUnit(unit)">
-				
-				<label for="unit-name">Name</label>
-				<input ng-model="user.name" placeholder="Name" class="form-control" />
-											
-				
-				<label for="unit-shortname">Short name</label>
-				<input ng-model="unit.shortName" placeholder="Short name" class="form-control" />
-
-				<label for="unit-parent">Parent</label>
-				<input ng-model="unit.parent.name" class="form-control" />
-      			<input type="submit" class="btn btn-primary pull-right"	value="Save" />
-				</form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
-    </div>
-  </div>
-        
-        
-        <!-- Edit Org Unit Details ends -->
-        
-  
-</div>
-</table> 
-
-<!--
+<div> <pagination total-items="totalItems" items-per-page="pageSize" 
+         ng-model="currentPage" ng-change="pageChanged()"></pagination></div>
     <div ng-show = "IsVisible">
 <h3>Edit User:</h3>
 
@@ -292,7 +148,7 @@
     <input type="password" ng-model="passw2" placeholder="Repeat Password">
   </div>
 </div>
-
+</form>
 <hr>
 <button class="btn btn-success" ng-disabled="error || incomplete">
   <span class="glyphicon glyphicon-save"></span> Save Changes
@@ -301,10 +157,12 @@
  </span> Close
 </button>
         
-        </form>
     
-</div> -->
-<div id="map"></div>
-
+</div>
+   
+<div>
+<div id="map"></div> 
+    
+</div>
 </body>
 </html>
