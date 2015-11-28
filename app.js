@@ -13,7 +13,7 @@ $scope.ouLevel = 4;
                
 init();    
 function init(){
-    	var apiUrl = "http://192.168.0.105:8082/api/organisationUnits.json?fields=:identifiable,coordinates,level,shortName,parent&pageSize=25&page="+$scope.currentPage+"&level="+$scope.ouLevel;
+    	var apiUrl = "http://localhost:8080/api/organisationUnits.json?fields=:identifiable,coordinates,level,shortName,parent&pageSize=25&page="+$scope.currentPage+"&level="+$scope.ouLevel;
 		
     	// Cross-site redirect error solution: Run chrome with --disable-web-security
     	//var base64 = "YWRtaW46ZGlzdHJpY3Q=";
@@ -33,6 +33,28 @@ function init(){
 			   $scope.totalItems = response.pager.total ;
 			   console.log(response.pager.total);
 			  console.log(response.organisationUnits);
+            
+             var ctrl = this;
+            
+            ctrl.allOrgUnits = response.organisationUnits;
+            console.log(ctrl.allOrgUnits)
+            ctrl.cordss = []
+            
+                for (i = 0; i < ctrl.allOrgUnits.length; i++)
+                    {
+                         
+    			if(ctrl.allOrgUnits[i].coordinates != undefined && ctrl.allOrgUnits[i].coordinates.length < 200)
+                
+                {
+                   
+                    
+                    ctrl.cordss.push(new Array(ctrl.allOrgUnits[i].name, ctrl.allOrgUnits[i].coordinates.substring(1,ctrl.allOrgUnits[i].coordinates.length-1).split(",")));
+                }
+                    }
+
+        
+    		// Add the coordinates to the map.
+    		addMarkers(ctrl.cordss);
 		  });
     } 
     
@@ -132,7 +154,7 @@ $scope.addOrgUnit = function(unit) {
 		console.log(unitData);
 			var request = $http( {
 			method: "post",
-			url: "http://192.168.0.105:8082/api/organisationUnits/",
+			url: "http://localhost:8080/api/organisationUnits/",
 			data: unitData,
 			headers: {
 				'Authorization': 'Basic YWRtaW46ZGlzdHJpY3Q=',
@@ -181,7 +203,7 @@ $scope.updateOrgUnit = function(currentUnit) {
 		currentUnit.openingDate = $scope.currentUnit.createdDate;
 		var request = $http({
 			method: "put",
-			url: "http://192.168.0.105:8082/api/organisationUnits/" + currentUnit.id,
+			url: "http://localhost:8080/api/organisationUnits/" + currentUnit.id,
 			data: currentUnit,
 		});
 
