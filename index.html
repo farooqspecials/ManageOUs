@@ -101,7 +101,7 @@
 							<span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-							<li><a href="#">Locate on Map</a></li>
+							<li><a ng-click="locateUnitOnMap(record.name)">Locate on Map</a></li>
 							<li><a href="#">Edit Coordinates</a></li>
 							<li><a href="#" ng-click="showEditableForm(record.code,record.level,record.id,record.name,record.href,record.shortName,record.created)">Edit org. unit details</a></li>
 							<li><a href="#" ng-click="showInsertForm(record.code,record.level,record.id,record.name,record.href)">Add new facility</a></li>
@@ -171,7 +171,7 @@
                             <label for="unit-shortname">Short name</label>
                             <input id="currentUnitShortName" ng-model="currentUnit.shortName" placeholder="Short name" class="form-control" />
 
-                            <input type="submit" class="btn btn-primary" value="Save" />
+                            <input type="submit" class="btn btn-primary pull-right" value="Save" />
                         </form>
                     </div>
                 </div>

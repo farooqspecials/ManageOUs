@@ -41,11 +41,10 @@ function initialize() {
 }
 
 
-
+var	markers = [];
 function addMarkers(coordinates) {
 	var marker;
     var infowindow;
-	markers = [];
 	infowindow = new google.maps.InfoWindow();
 	//var customImage = 'https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle_blue.png';
 
@@ -69,4 +68,11 @@ function addMarkers(coordinates) {
 			}
 		})(marker, i));
 	}
+}
+
+function clearMarkers() {
+	 for (var i = 0; i < markers.length; i++ ) {
+		markers[i].setMap(null);
+     }
+	markers.length = 0;
 }
