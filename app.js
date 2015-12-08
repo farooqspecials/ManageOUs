@@ -1,4 +1,4 @@
-angular.module('myApp', ['ui.bootstrap']).controller('ApplicationController', function($scope,$http) {
+angular.module('myApp', ['ui.bootstrap','smart-table']).controller('ApplicationController', function($scope,$http) {
   
 $scope.fName = '';
 $scope.lName = '';
@@ -14,7 +14,7 @@ $scope.ouLevel = 4;
 init();    
 function init(){
     	clearMarkers();
-		var apiUrl = "http://localhost:8080/api/organisationUnits.json?fields=:identifiable,coordinates,level,shortName,parent&pageSize=25&page="+$scope.currentPage+"&level="+$scope.ouLevel;
+		var apiUrl = "http://192.168.0.105:8082/api/organisationUnits.json?fields=:identifiable,coordinates,level,shortName,parent&paging=false&level="+$scope.ouLevel;
 		
     	// Cross-site redirect error solution: Run chrome with --disable-web-security
     	//var base64 = "YWRtaW46ZGlzdHJpY3Q=";
@@ -31,13 +31,12 @@ function init(){
 		$http.get(apiUrl)
 		  .success(function (response) {
 			  angular.copy(response.organisationUnits, $scope.records);
-			   $scope.totalItems = response.pager.total ;
-			   console.log(response.pager.total);
-			  console.log(response.organisationUnits);
+			  // $scope.totalItems = response.pager.total ;
             
              var ctrl = this;
-            
             ctrl.allOrgUnits = response.organisationUnits;
+            $scope.allOrgUnits = response.organisationUnits;
+			$scope.displayedUnits = [].concat($scope.allOrgUnits);
             ctrl.cordss = []; 
             for (i = 0; i < ctrl.allOrgUnits.length; i++) {
                if(ctrl.allOrgUnits[i].coordinates != undefined && ctrl.allOrgUnits[i].coordinates.length < 200) {
@@ -145,7 +144,7 @@ $scope.addOrgUnit = function(unit) {
 		console.log(unitData);
 			var request = $http( {
 			method: "post",
-			url: "http://localhost:8080/api/organisationUnits/",
+			url: "http://192.168.0.105:8082/api/organisationUnits/",
 			data: unitData,
 			headers: {
 				'Authorization': 'Basic YWRtaW46ZGlzdHJpY3Q=',
@@ -194,7 +193,7 @@ $scope.updateOrgUnit = function(currentUnit) {
 		currentUnit.openingDate = $scope.currentUnit.createdDate;
 		var request = $http({
 			method: "put",
-			url: "http://localhost:8080/api/organisationUnits/" + currentUnit.id,
+			url: "http://192.168.0.105:8082/api/organisationUnits/" + currentUnit.id,
 			data: currentUnit,
 		});
 
@@ -216,6 +215,7 @@ $scope.closediv = function (){
  $scope.IsVisible = false;
  
 };
+
 $scope.locateUnitOnMap = function(unitName) {
 	for (var i = 0; i < markers.length; i++ ) {
 		if(unitName == markers[i].getTitle()) {
@@ -224,4 +224,23 @@ $scope.locateUnitOnMap = function(unitName) {
 		console.log(markers[i].getTitle());
      }
 }
-});
+}).directive('stRatio', function() {
+    return {
+      link: function(scope, element, attr) {
+        var ratio = +(attr.stRatio);
+        element.css('width', ratio + '%');
+
+      }
+    };
+  }).directive('pageSelect', function() {
+      return {
+        restrict: 'E',
+        template: '<input type="text" class="select-page" ng-model="inputPage" ng-change="selectPage(inputPage)">',
+        link: function(scope, element, attrs) {
+          scope.$watch('currentPage', function(c) {
+            scope.inputPage = c;
+          });
+        }
+      }
+    })
+                ;;
