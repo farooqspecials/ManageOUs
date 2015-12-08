@@ -11,10 +11,25 @@
     <script src="js/jquery-2.1.4.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/ui-bootstrap-tpls-0.12.0.js"></script>
-    <script src="#"></script>
+    
     <script src="https://maps.googleapis.com/maps/api/js"></script>
     <script src="data.js"></script>
     <script src="app.js"></script>
+    <script src="initmap.js"></script>
+    <style>
+    html, body, #map {
+        /*width: 25%;
+        height: 25%;
+        margin: 0;
+        padding: 0;*/
+    }
+    #map {
+         width: 1000px;
+         height: 600px;
+         align-content: center;
+        position: relative;
+    }
+    </style>
 </head>
 
 <body ng-controller="ApplicationController as appctrl">
@@ -22,7 +37,8 @@
     <!--body ng-app="myApp" ng-controller="userCtrl" ng-init="init()"-->
 
     <div class="container">
-
+      <div class="row">
+          <div class="col-md-12">
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -39,23 +55,32 @@
                 </div>
             </div>
         </nav>
+          </div>
+          </div>
 
-        <div>
+        <div class="row">
+            <div class="col-md-12">
+            
+            
 
-            <button type="button" class="btn btn-primary" ng-click="levelOU()">Organization Units </button>
+            <button type="button" id="btnou" class="btn btn-primary" ng-click="levelOU()">Organization Units </button>
             </button>
-            <button type="button" class="btn btn-primary" ng-click="levelCD()">Chiefdom</button>
+            <button type="button" id="btnchiefdom" class="btn btn-primary" ng-click="levelCD()">Chiefdom</button>
             </button>
-            <button type="button" class="btn btn-primary" ng-click="levelD()">District </button>
+            <button type="button" id="btndistrict" class="btn btn-primary" ng-click="levelD()">District </button>
             </button>
 
-            <button type="button" class="btn btn-primary" ng-click="levelF()">Facility </button>
+            <button type="button" id="btnfacility" class="btn btn-primary" ng-click="levelF()">Facility </button>
             </button>
+            </div>
         </div>
 
-
-        <h4>Search For the Organization Units</h4>
-
+        <div class="row">
+            <div class="col-md-12">
+            <h4>Search For the Organization Units</h4>
+            </div>
+        
+        </div>
         <div class="row">
 
 
@@ -79,8 +104,9 @@
             </div>
 
         </div>
-
-
+       
+      <div class="row">
+          <div class="col-md-12"> 
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -111,10 +137,19 @@
                 </tr>
             </tbody>
         </table>
-        <div>
-            <pagination total-items="totalItems" items-per-page="pageSize" ng-model="currentPage" ng-change="pageChanged()" max-size="10"></pagination>
         </div>
-        <div class="container">
+    </div>
+        
+    <div class="row">
+        <div class="col-md-12">
+            <pagination total-items="totalItems" items-per-page="pageSize" ng-model="currentPage" ng-change="pageChanged()" max-size="10">  </pagination>
+        </div>
+    </div>
+    <div class="row">
+        <div id="map" class="col-md-12"></div>
+    </div>
+</div>
+       
 
         <!-- Modal facility Start -->
         <div class="modal fade" id="addOU" role="dialog">
@@ -180,12 +215,11 @@
         </div>
 
 
-        <!-- Edit Org Unit Details ends -->
 
 
 
-    </div>
-        <div id="map"></div>
+    
+        
 
 </body>
 

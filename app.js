@@ -14,7 +14,7 @@ $scope.ouLevel = 4;
 init();    
 function init(){
     	clearMarkers();
-		var apiUrl = "http://192.168.0.105:8082/api/organisationUnits.json?fields=:identifiable,coordinates,level,shortName,parent&pageSize=25&page="+$scope.currentPage+"&level="+$scope.ouLevel;
+		var apiUrl = "http://localhost:8080/api/organisationUnits.json?fields=:identifiable,coordinates,level,shortName,parent&pageSize=25&page="+$scope.currentPage+"&level="+$scope.ouLevel;
 		
     	// Cross-site redirect error solution: Run chrome with --disable-web-security
     	//var base64 = "YWRtaW46ZGlzdHJpY3Q=";
@@ -145,7 +145,7 @@ $scope.addOrgUnit = function(unit) {
 		console.log(unitData);
 			var request = $http( {
 			method: "post",
-			url: "http://192.168.0.105:8082/api/organisationUnits/",
+			url: "http://localhost:8080/api/organisationUnits/",
 			data: unitData,
 			headers: {
 				'Authorization': 'Basic YWRtaW46ZGlzdHJpY3Q=',
@@ -194,7 +194,7 @@ $scope.updateOrgUnit = function(currentUnit) {
 		currentUnit.openingDate = $scope.currentUnit.createdDate;
 		var request = $http({
 			method: "put",
-			url: "http://192.168.0.105:8082/api/organisationUnits/" + currentUnit.id,
+			url: "http://localhost:8080/api/organisationUnits/" + currentUnit.id,
 			data: currentUnit,
 		});
 
