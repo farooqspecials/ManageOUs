@@ -13,8 +13,7 @@ $scope.ouLevel = 4;
                
 init();    
 function init(){
-    	clearMarkers();
-		var apiUrl = "http://localhost:8080/api/organisationUnits.json?fields=:identifiable,coordinates,level,shortName,parent&paging=false&level="+$scope.ouLevel;
+		var apiUrl = "http://192.168.0.105:8082/api/organisationUnits.json?fields=:identifiable,coordinates,level,shortName,parent&paging=false&level="+$scope.ouLevel;
 		
     	// Cross-site redirect error solution: Run chrome with --disable-web-security
     	//var base64 = "YWRtaW46ZGlzdHJpY3Q=";
@@ -43,11 +42,29 @@ function init(){
 				   ctrl.cordss.push(new Array(ctrl.allOrgUnits[i].name, ctrl.allOrgUnits[i].coordinates.substring(1,ctrl.allOrgUnits[i].coordinates.length-1).split(",")));
                 }
             }
+			
     		// Add the coordinates to the map.
     		addMarkers(ctrl.cordss);
 		  });
+		  
+		  $http.get("http://192.168.0.105:8082/api/organisationUnits.json?fields=:identifiable,coordinates,level,shortName,parent&paging=false&level=3")
+		  .success(function (response) {
+				$scope.LevelThreeUnits = response.organisationUnits;
+				this.LevelThreeUnits = response.organisationUnits;
+		  });
     } 
-    
+    $scope.$watch('displayedUnits', function(newVal, oldVal){
+		clearMarkers();
+		if(typeof newVal != 'undefined') {
+			var cords = [];
+			for (i = 0; i < newVal.length; i++) {
+               if(newVal[i].coordinates != undefined && newVal[i].coordinates.length < 200) {
+				   cords.push(new Array(newVal[i].name, newVal[i].coordinates.substring(1,newVal[i].coordinates.length-1).split(",")));
+                }
+            }
+			addMarkers(cords);
+		}
+	});
     
     var appctrl = this;
 	appctrl.levelOptions = [{name:'ChiefDom', level:1},{name:'District', level:2},{name:'Organisation Unit', level:3}, 	                         {name:'Facility', level:4}];
@@ -66,13 +83,7 @@ function init(){
 			return (orgUnit.level == appctrl.currentOrgType.level)
                // && orgUnit.name.indexOf(appctrl.currentQuery) != -1);
 		}
-	}
-    
-    $scope.pageChanged = function() {
-		clearMarkers();
-		init();
-	};
-	
+	}  	
     $scope.levelOU=function(){
 		$scope.ouLevel = 3;   
 		appctrl.currentOrgType = appctrl.levelOptions[2];
@@ -144,7 +155,7 @@ $scope.addOrgUnit = function(unit) {
 		console.log(unitData);
 			var request = $http( {
 			method: "post",
-			url: "http://localhost:8080/api/organisationUnits/",
+			url: "http://192.168.0.105:8082/api/organisationUnits/",
 			data: unitData,
 			headers: {
 				'Authorization': 'Basic YWRtaW46ZGlzdHJpY3Q=',
@@ -157,8 +168,9 @@ $scope.addOrgUnit = function(unit) {
             console.log("after adding data");
 			console.log(data);
 			alert("Org Unit added successfully");
+			init();
 		});
-		init();
+		
 		 $('#addOU').modal('hide');
 }
 $('#addOU').on('show.bs.modal', function (event) {
@@ -193,7 +205,7 @@ $scope.updateOrgUnit = function(currentUnit) {
 		currentUnit.openingDate = $scope.currentUnit.createdDate;
 		var request = $http({
 			method: "put",
-			url: "http://localhost:8080/api/organisationUnits/" + currentUnit.id,
+			url: "http://192.168.0.105:8082/api/organisationUnits/" + currentUnit.id,
 			data: currentUnit,
 		});
 
@@ -209,6 +221,54 @@ $scope.updateOrgUnit = function(currentUnit) {
 
 		 $('#editOU').modal('hide');
 }
+
+$('#addMapOU').on('show.bs.modal', function (event) {
+
+  var modal = $(this);
+  modal.find('#unitLevel').val(4);
+  modal.find('#longitude').val(longitude);
+  modal.find('#latitude').val(latitude);
+
+});
+$scope.addFacility = function(unit) {
+	var parentUnit;
+	for (i = 0; i < this.LevelThreeUnits.length; i++) {
+		if(this.LevelThreeUnits[i].name == unit.parentName) {
+			parentUnit = this.LevelThreeUnits[i];
+		}
+	}
+	var unitData = {
+				"name":unit.name,
+				"shortName":unit.shortName,
+                "level": unit.level,
+				"openingDate": new Date(),
+                //"coordinates": coords,
+                "coordinates": "[" + longitude + "," + latitude + "]" ,
+                "parent":{"code" : parentUnit.code, "level" : parentUnit.level, "id" : parentUnit.id, "name": parentUnit.name, "href": parentUnit.href}
+				//"parent": {"id": $scope.parentUnit.id, "name":$scope.parentUnit.name, "code:"$scope.parentUnit.code,"href:"$scope.parentUnit.href}
+		};
+		console.log(unitData);
+			var request = $http( {
+			method: "post",
+			url: "http://192.168.0.105:8082/api/organisationUnits/",
+			data: unitData,
+			headers: {
+				'Authorization': 'Basic YWRtaW46ZGlzdHJpY3Q=',
+				'Content-Type': 'application/json'
+			},
+		});
+
+		// Perform request
+		request.success(function(data) {
+            console.log("after adding data");
+			console.log(data);
+			alert("Org Unit added successfully");
+			init();
+		});
+		
+		 $('#addMapOU').modal('hide');
+		
+}
 $scope.closediv = function (){
     console.log("hey")
        
@@ -216,22 +276,13 @@ $scope.closediv = function (){
  
 };
 
-$scope.locateUnitOnMap = function(unitName, coordinates) {
-	
-    if( coordinates!==undefined){
-    for (var i = 0; i < markers.length; i++ ) {
-		
-        if(unitName == markers[i].getTitle()) {
+$scope.locateUnitOnMap = function(unitName) {
+	for (var i = 0; i < markers.length; i++ ) {
+		if(unitName == markers[i].getTitle()) {
 			new google.maps.event.trigger( markers[i], 'click' );
 		}
 		console.log(markers[i].getTitle());
-               
-    }
-        }
-    else
-        {
-            alert("No Coordinates found for this location")
-        }
+     }
 }
 }).directive('stRatio', function() {
     return {

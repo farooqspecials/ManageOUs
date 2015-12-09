@@ -25,8 +25,8 @@
         padding: 0;*/
     }
     #map {
-         width: 1000px;
-         height: 600px;
+         width: 10px;
+         height: 500px;
          align-content: center;
         position: relative;
     }
@@ -80,7 +80,17 @@ tfoot td {
     display: inline-block;
 }
 
-                
+                .contextmenu{
+  visibility:hidden;
+  background:#ffffff;
+  border:1px solid #8888FF;
+  z-index: 10;
+  position: relative;
+  width: 140px;
+}
+.contextmenu div{
+padding-left: 5px
+}
     </style>
 </head>
 
@@ -128,15 +138,15 @@ tfoot td {
         </div>
        
       <div class="row">
-          <div class="col-md-12"> 
+          <div style="width:60%" class="col-md-12"> 
 		  <table id="orgUnitsTable" st-table="displayedUnits" st-safe-src="allOrgUnits"  class="table table-striped">
                     <thead>
                         <tr>
                             <th st-ratio="20" st-sort="name">Name</th>
 							<th st-ratio="20" st-sort="shortName">Short Name</th>
                             <th st-ratio="20" st-sort="parent.name">Parent Name</th>
-                            <th st-ratio="20">Level</th>
-							<th>Options</th>
+                            <th st-ratio="10">Level</th>
+							<th st-ratio="30">Options</th>
                         </tr>
                         <tr>
                             <th colspan="5"><input st-search="" class="form-control" placeholder="Enter search string here ..." type="text" /></th>
@@ -147,8 +157,8 @@ tfoot td {
                             <td st-ratio="20">{{record.name}}</td>
                             <td st-ratio="20">{{record.shortName}}</td>
                             <td st-ratio="20">{{record.parent.name}}</td>
-                            <td st-ratio="20">{{record.level}}</td>
-                            <td st-ratio="20">
+                            <td st-ratio="10">{{record.level}}</td>
+                            <td st-ratio="30">
                                <div style="position: relative;"  class="dropdown">
 								<div style="z-index:999999;position: absolute; top:0; left:0; height: 200px"></div>
 									<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -156,7 +166,7 @@ tfoot td {
 									<span class="caret"></span>
 									</button>
 									<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-									<li ng-show="record.level == 4"><a ng-click="locateUnitOnMap(record.name, record.coordinates)">Locate on Map</a></li>
+									<li ng-show="record.level == 4"><a ng-click="locateUnitOnMap(record.name)">Locate on Map</a></li>
 									<li ng-show="record.level == 4"><a href="#">Edit Coordinates</a></li>
 									<li><a href="#" ng-click="showEditableForm(record.code,record.level,record.id,record.name,record.href,record.shortName,record.created)">Edit org. unit details</a></li>
 									<li ng-show="record.level != 4"><a href="#" ng-click="showInsertForm(record.code,record.level,record.id,record.name,record.href)">Add new facility</a></li>
@@ -204,6 +214,7 @@ tfoot td {
             </tbody>
         </table-->
         </div>
+		 <div id="map" style="width:40%" class="col-md-12"></div>
     </div>
         
     <div class="row">
@@ -212,7 +223,7 @@ tfoot td {
         </div>
     </div>
     <div class="row">
-        <div id="map" class="col-md-12"></div>
+       
     </div>
 </div>
        
@@ -279,6 +290,53 @@ tfoot td {
 
             </div>
         </div>
+		
+		<!-- Modal Add facility from map Start -->
+        <div class="modal fade" id="addMapOU" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Add Facility</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form name="addUnitMapForm" ng-submit="addFacility(unit)">
+
+                            <label for="unit-name">Name</label>
+                            <input ng-model="unit.name" placeholder="Name" class="form-control" />
+
+                            <label for="unit-shortname">Short name</label>
+                            <input ng-model="unit.shortName" placeholder="Short name" class="form-control" />
+
+                            <label for="unit-parent">Parent Unit Name</label>
+							<select ng-model="unit.parentName" class="form-control" ng-change="updateParentUnitInfo()">	
+								<option ng-repeat="item in LevelThreeUnits" value="{{item.name}}">
+									{{item.name}}
+								</option>
+							 </select>
+							 
+							<label for="longitude">Longitude</label>
+							<input id="longitude" readonly="true" ng-model="unit.longitude" value="4" class="form-control" />
+                            <!--input id="parentUnitName" readonly="true" ng-model="unit.parentName" class="form-control" /-->
+							<label for="latitude">Latitude</label>
+							<input id="latitude" readonly="true"  ng-model="unit.latitude" value="4" class="form-control" />
+							
+                            <label for="unit-level">Level</label>
+                            <input id="unitLevel" readonly="true" ng-model="unit.level" value="4" class="form-control" />
+
+							
+                            <input type="submit" class="btn btn-primary pull-right" value="Save" />
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Modal facility end -->
 </body>
 
 </html>
