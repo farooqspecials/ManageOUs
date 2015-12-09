@@ -156,7 +156,7 @@ tfoot td {
 									<span class="caret"></span>
 									</button>
 									<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-									<li ng-show="record.level == 4"><a ng-click="locateUnitOnMap(record.name)">Locate on Map</a></li>
+									<li ng-show="record.level == 4"><a ng-click="locateUnitOnMap(record.name, record.coordinates)">Locate on Map</a></li>
 									<li ng-show="record.level == 4"><a href="#">Edit Coordinates</a></li>
 									<li><a href="#" ng-click="showEditableForm(record.code,record.level,record.id,record.name,record.href,record.shortName,record.created)">Edit org. unit details</a></li>
 									<li ng-show="record.level != 4"><a href="#" ng-click="showInsertForm(record.code,record.level,record.id,record.name,record.href)">Add new facility</a></li>
