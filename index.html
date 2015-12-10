@@ -12,7 +12,7 @@
     
     <script src="js/bootstrap.min.js"></script>
     <script src="js/ui-bootstrap-tpls-0.12.0.js"></script>
-     <script src="http://lorenzofox3.github.io/smart-table-website/bower_components/angular-smart-table/dist/smart-table.js"></script>
+     <script src="js/smart-table.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js"></script>
     <script src="data.js"></script>
     <script src="app.js"></script>
@@ -167,8 +167,7 @@ padding-left: 5px
 									</button>
 									<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
 									<li ng-show="record.level == 4"><a ng-click="locateUnitOnMap(record.name)">Locate on Map</a></li>
-									<li ng-show="record.level == 4"><a href="#">Edit Coordinates</a></li>
-									<li><a href="#" ng-click="showEditableForm(record.code,record.level,record.id,record.name,record.href,record.shortName,record.created)">Edit org. unit details</a></li>
+									<li><a href="#" ng-click="showEditableForm(record.code,record.level,record.id,record.name,record.href,record.shortName,record.created,record.coordinates)">Edit org. unit details</a></li>
 									<li ng-show="record.level != 4"><a href="#" ng-click="showInsertForm(record.code,record.level,record.id,record.name,record.href)">Add new facility</a></li>
 									</ul>
 								</div></div>
@@ -282,7 +281,13 @@ padding-left: 5px
 
                             <label for="unit-shortname">Short name</label>
                             <input id="currentUnitShortName" ng-model="currentUnit.shortName" placeholder="Short name" class="form-control" />
-
+							<div id="coordinatesDiv">
+							<label for="longitude">Longitude</label>
+							<input id="longitude" ng-model="currentUnit.newlongitude" class="form-control" />
+                            <!--input id="parentUnitName" readonly="true" ng-model="unit.parentName" class="form-control" /-->
+							<label for="latitude">Latitude</label>
+							<input id="latitude"  ng-model="currentUnit.latitude" class="form-control" />
+							</div>
                             <input type="submit" class="btn btn-primary pull-right" value="Save" />
                         </form>
                     </div>

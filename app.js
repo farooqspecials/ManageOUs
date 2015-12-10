@@ -36,6 +36,7 @@ function init(){
             ctrl.allOrgUnits = response.organisationUnits;
             $scope.allOrgUnits = response.organisationUnits;
 			$scope.displayedUnits = [].concat($scope.allOrgUnits);
+			
             ctrl.cordss = []; 
             for (i = 0; i < ctrl.allOrgUnits.length; i++) {
                if(ctrl.allOrgUnits[i].coordinates != undefined && ctrl.allOrgUnits[i].coordinates.length < 200) {
@@ -56,12 +57,14 @@ function init(){
     $scope.$watch('displayedUnits', function(newVal, oldVal){
 		clearMarkers();
 		if(typeof newVal != 'undefined') {
+			console.log(newVal);
 			var cords = [];
 			for (i = 0; i < newVal.length; i++) {
                if(newVal[i].coordinates != undefined && newVal[i].coordinates.length < 200) {
 				   cords.push(new Array(newVal[i].name, newVal[i].coordinates.substring(1,newVal[i].coordinates.length-1).split(",")));
                 }
             }
+			
 			addMarkers(cords);
 		}
 	});
@@ -184,7 +187,8 @@ $('#addOU').on('show.bs.modal', function (event) {
   }
 });
 $scope.currentUnit = {};
-$scope.showEditableForm = function(code,level,id,name,href,shortName,createdDate) {
+
+$scope.showEditableForm = function(code,level,id,name,href,shortName,createdDate,coordinates) {
    $scope.currentUnit.code= code;
    $scope.currentUnit.level= level;
    $scope.currentUnit.id= id;
@@ -192,17 +196,31 @@ $scope.showEditableForm = function(code,level,id,name,href,shortName,createdDate
    $scope.currentUnit.href= href;
    $scope.currentUnit.shortName= shortName;
    $scope.currentUnit.createdDate= createdDate;
-   console.log($scope.currentUnit);
+   if(typeof coordinates != 'undefined' && level == 4) {
+	    $scope.currentUnit.newlongitude = coordinates.substring(1,coordinates.length-1).split(",")[0];
+		$scope.currentUnit.latitude = coordinates.substring(1,coordinates.length-1).split(",")[1];
+   }
    $('#editOU').modal('show');
   }
 $('#editOU').on('show.bs.modal', function (event) {
   var modal = $(this);
   modal.find('#currentUnitName').val($scope.currentUnit.name);
   modal.find('#currentUnitShortName').val($scope.currentUnit.shortName);
+
+  if($scope.currentUnit.level != 4) {
+	   modal.find('#coordinatesDiv').css("display","none");
+  } else if($scope.currentUnit.level == 4 && typeof $scope.currentUnit.coordinates != 'undefined'){
+	  modal.find('#longitude').val($scope.currentUnit.newlongitude);
+	  modal.find('#latitude').val($scope.currentUnit.latitude);
+	  modal.find('#coordinatesDiv').css("display","");
+  }
 });
 $scope.updateOrgUnit = function(currentUnit) {
-		console.log(currentUnit);
+
 		currentUnit.openingDate = $scope.currentUnit.createdDate;
+		if($scope.currentUnit.level == 4) {
+			currentUnit.coordinates = "[" + currentUnit.newlongitude+ "," + $scope.currentUnit.latitude + "]"
+		}
 		var request = $http({
 			method: "put",
 			url: "http://192.168.0.105:8082/api/organisationUnits/" + currentUnit.id,
@@ -280,9 +298,11 @@ $scope.locateUnitOnMap = function(unitName) {
 	for (var i = 0; i < markers.length; i++ ) {
 		if(unitName == markers[i].getTitle()) {
 			new google.maps.event.trigger( markers[i], 'click' );
+			return false;
 		}
 		console.log(markers[i].getTitle());
      }
+	 alert('Co-ordinate for this facility not found');
 }
 }).directive('stRatio', function() {
     return {
