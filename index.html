@@ -122,20 +122,20 @@ padding-left: 5px
 
         <div class="row">
             <div class="col-md-12">
-            
-            
 
-            <button type="button" id="btnou" class="btn btn-primary" ng-click="levelOU()">Organization Units </button>
-            </button>
-            <button type="button" id="btnchiefdom" class="btn btn-primary" ng-click="levelCD()">Chiefdom</button>
-            </button>
-            <button type="button" id="btndistrict" class="btn btn-primary" ng-click="levelD()">District </button>
-            </button>
-
-            <button type="button" id="btnfacility" class="btn btn-primary" ng-click="levelF()">Facility </button>
-            </button>
-            </div>
-        </div>
+                <div class="dropdown">
+  <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    Filter Based On Levels
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+    <li><a ng-click="levelOU()" href="#">Organization Units</a></li>
+    <li><a href="#" ng-click="levelCD()">Chiefdom</a></li>
+    <li><a href="#" ng-click="levelD()">District</a></li>
+    <li role="separator" class="divider"></li>
+    <li><a href="#" ng-click="levelF()">Facility</a></li>
+  </ul>
+</div>
        
       <div class="row">
           <div style="width:60%" class="col-md-12"> 
@@ -149,7 +149,7 @@ padding-left: 5px
 							<th st-ratio="30">Options</th>
                         </tr>
                         <tr>
-                            <th colspan="5"><input st-search="" class="form-control" placeholder="Enter search string here ..." type="text" /></th>
+                            <th class="col-md-5" colspan="5"><input st-search="" class="form-control" placeholder="search here ..." type="text" /></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -251,7 +251,10 @@ padding-left: 5px
 							
                             <label for="unit-level">Level</label>
                             <input id="unitLevel" readonly="true" ng-model="unit.level" class="form-control" />
+                            
+                            <div class="modal-footer">
                             <input type="submit" class="btn btn-primary pull-right" value="Save" />
+                            </div>
 
                         </form>
                     </div>
@@ -288,7 +291,9 @@ padding-left: 5px
 							<label for="latitude">Latitude</label>
 							<input id="latitude"  ng-model="currentUnit.latitude" class="form-control" />
 							</div>
+                            <div class="modal-footer">
                             <input type="submit" class="btn btn-primary pull-right" value="Save" />
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -330,9 +335,10 @@ padding-left: 5px
 							
                             <label for="unit-level">Level</label>
                             <input id="unitLevel" readonly="true" ng-model="unit.level" value="4" class="form-control" />
-
-							
+                            
+							<div class="modal-footer">
                             <input type="submit" class="btn btn-primary pull-right" value="Save" />
+                                <div class="modal-footer">
 
                         </form>
                     </div>
